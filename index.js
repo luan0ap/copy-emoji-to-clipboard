@@ -1,132 +1,25 @@
-const emojis = [
-  {
-    "emoji": "💬",
-    "name": "balão de fala"
-  },
-  {
-    "emoji": "💭",
-    "name": "balão de pensamento"
-  },
-  {
-    "emoji": "💪",
-    "name": "bíceps flexionados"
-  },
-  {
-    "emoji": "😱",
-    "name": "carinha gritando de medo"
-  },
-  {
-    "emoji": "😉",
-    "name": "carinha piscando"
-  },
-  {
-    "emoji": "😊",
-    "name": "carinha risonha e olhos sorridentes"
-  },
-  {
-    "emoji": "💛",
-    "name": "coração amarelo"
-  },
-  {
-    "emoji": "💙",
-    "name": "coração azul"
-  },
-  {
-    "emoji": "🤍",
-    "name": "coração branco"
-  },
-  {
-    "emoji": "🧡",
-    "name": "coração laranja"
-  },
-  {
-    "emoji": "🤎",
-    "name": "coração marrom"
-  },
-  {
-    "emoji": "🖤",
-    "name": "coração preto"
-  },
-  {
-    "emoji": "💜",
-    "name": "coração roxo"
-  },
-  {
-    "emoji": "💚",
-    "name": "coração verde"
-  },
-  {
-    "emoji": "❤️",
-    "name": "coração vermelho"
-  },
-  {
-    "emoji": "👇",
-    "name": "dorso de mão com indicador apontando para baixo"
-  },
-  {
-    "emoji": "👉",
-    "name": "dorso de mão com indicador apontando para a direita"
-  },
-  {
-    "emoji": "⭐",
-    "name": "estrela"
-  },
-  {
-    "emoji": "🤩",
-    "name": "estrelas nos olhos"
-  },
-  {
-    "emoji": "🚀",
-    "name": "foguete"
-  },
-  {
-    "emoji": "🔥",
-    "name": "incêndio"
-  },
-  {
-    "emoji": "💡",
-    "name": "lâmpada"
-  },
-  {
-    "emoji": "🚨",
-    "name": "luz de viatura policial"
-  },
-  {
-    "emoji": "👀",
-    "name": "olhos"
-  },
-  {
-    "emoji": "⬇",
-    "name": "seta para baixo"
-  },
-  {
-    "emoji": "☀️",
-    "name": "sol"
-  }
-]
+import { emojis } from './emojis.js'
 
-function renderEmoji (data) {
-  const { emoji, name } = data
-
-  const div = document.createElement('div')
-  div.setAttribute('class', 'emoji')
-  div.setAttribute('title', name)
-  div.innerText = emoji
-
-  div.addEventListener('click', (emojiSelected) => {
-      navigator.clipboard.writeText(emojiSelected.target.innerText);
-  })
-
-  const element = document.querySelector('#emojis')
-  element.appendChild(div)
+function EmojiComponent ({ unicode, title } = {}) {
+  return (`
+    <span class="emoji" title="${title}" data-unicode="${unicode}">
+      ${unicode}
+    </span>
+  `)
 }
 
-function renderEmojis (emojis) {
-  for (const emoji of emojis) {
-    renderEmoji(emoji)
-  }
+function renderContentData () {
+  const $emojiContainer = document.querySelector('#emojis')
+
+  $emojiContainer.innerHTML = emojis.map(EmojiComponent).join('')
+
+  $emojiContainer.addEventListener('click', (event) => {
+    if (event.target?.dataset?.unicode) {
+      navigator.clipboard.writeText(event.target.dataset.unicode)
+    }
+  })
 }
 
 window.addEventListener('load', () => {
-  renderEmojis(emojis)
+  renderContentData()
 })
